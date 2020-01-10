@@ -7,7 +7,7 @@
 Summary:      Extension to work with the Memcached caching daemon
 Name:         php-pecl-memcache
 Version:      3.0.5
-Release:      3%{?dist}
+Release:      4%{?dist}
 License:      PHP
 Group:        Development/Languages
 URL:          http://pecl.php.net/package/%{pecl_name}
@@ -17,13 +17,14 @@ Source1:      LICENSE
 Source2:      xml2changelog
 Patch0:       php-pecl-memcache-3.0.5-fdcast.patch
 Patch1:       php-pecl-memcache-3.0.5-refcount.patch
+Patch2:       php-pecl-memcache-3.0.5-get-mem-corrupt.patch
 
 BuildRoot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: php-devel >= 4.3.11, php-pear, zlib-devel
 Requires(post): %{__pecl}
 Requires(postun): %{__pecl}
 Provides:     php-pecl(%{pecl_name}) = %{version}-%{release}
-%if %{?php_zend_api}0
+%if 0%{?php_zend_api:1}
 Requires:     php(zend-abi) = %{php_zend_api}
 Requires:     php(api) = %{php_core_api}
 %else
@@ -47,6 +48,7 @@ Memcache can be used as a PHP session handler.
 pushd memcache-%{version}
 %patch0 -p1 -b .fdcast
 %patch1 -p1 -b .refcount
+%patch2 -p1 -b .get-mem-corrupt
 popd
 
 %{_bindir}/php -n %{SOURCE2} package.xml >CHANGELOG
@@ -141,6 +143,9 @@ fi
 
 
 %changelog
+* Wed Oct 12 2011 Vojtech Vitek (V-Teq) <vvitek@redhat.com> - 3.0.5-4
+- fix get/unserialize memory corruption in memcache_pool.c (#722418)
+
 * Thu Apr 14 2011 Joe Orton <jorton@redhat.com> - 3.0.5-3
 - fix refcount handling in queue (PECL #13623, #696649)
 
