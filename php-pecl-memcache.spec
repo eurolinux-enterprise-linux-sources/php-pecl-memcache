@@ -6,8 +6,8 @@
 
 Summary:      Extension to work with the Memcached caching daemon
 Name:         php-pecl-memcache
-Version:      3.0.4
-Release:      3.2%{?dist}.2
+Version:      3.0.5
+Release:      3%{?dist}
 License:      PHP
 Group:        Development/Languages
 URL:          http://pecl.php.net/package/%{pecl_name}
@@ -15,6 +15,8 @@ URL:          http://pecl.php.net/package/%{pecl_name}
 Source:       http://pecl.php.net/get/%{pecl_name}-%{version}.tgz
 Source1:      LICENSE
 Source2:      xml2changelog
+Patch0:       php-pecl-memcache-3.0.5-fdcast.patch
+Patch1:       php-pecl-memcache-3.0.5-refcount.patch
 
 BuildRoot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: php-devel >= 4.3.11, php-pear, zlib-devel
@@ -41,6 +43,12 @@ Memcache can be used as a PHP session handler.
 
 %prep 
 %setup -c -q
+
+pushd memcache-%{version}
+%patch0 -p1 -b .fdcast
+%patch1 -p1 -b .refcount
+popd
+
 %{_bindir}/php -n %{SOURCE2} package.xml >CHANGELOG
 
 # avoid spurious-executable-perm
@@ -133,6 +141,17 @@ fi
 
 
 %changelog
+* Thu Apr 14 2011 Joe Orton <jorton@redhat.com> - 3.0.5-3
+- fix refcount handling in queue (PECL #13623, #696649)
+
+* Wed Apr 13 2011 Joe Orton <jorton@redhat.com> - 3.0.5-2
+- correct fix for casting in memcache_pool.c (#672363)
+
+* Wed Mar 23 2011 Joe Orton <jorton@redhat.com> - 3.0.5-1
+- rebase to 3.0.5 (#638892, #638887)
+- fix casting in memcache_pool.c (#672363)
+- fix Release (#604559)
+
 * Fri Apr 16 2010 Joe Orton <jorton@redhat.com> - 3.0.4-3.2.2
 - package the license
 
