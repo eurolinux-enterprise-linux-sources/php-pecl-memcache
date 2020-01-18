@@ -10,7 +10,7 @@
 Summary:      Extension to work with the Memcached caching daemon
 Name:         php-pecl-memcache
 Version:      3.0.8
-Release:      2%{?dist}
+Release:      4%{?dist}
 License:      PHP
 Group:        Development/Languages
 URL:          http://pecl.php.net/package/%{pecl_name}
@@ -216,6 +216,12 @@ fi
 
 
 %changelog
+* Fri Jan 24 2014 Daniel Mach <dmach@redhat.com> - 3.0.8-4
+- Mass rebuild 2014-01-24
+
+* Fri Dec 27 2013 Daniel Mach <dmach@redhat.com> - 3.0.8-3
+- Mass rebuild 2013-12-27
+
 * Thu Jul 18 2013 Remi Collet <rcollet@redhat.com> - 3.0.8-2
 - rebuild for new value of php(zend-abi) and php(api)
 
